@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
+import moment from "moment";
 
 import {
   getStudents,
@@ -124,34 +125,27 @@ function ContentPage() {
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
+  const [fields, setFields] = useState([]);
 
   const showAddModal = () => {
     setIsAddModalVisible(true);
   };
 
-  const handleAddModalOk = async (
-    firstName,
-    classEducation,
-    course,
-    educationLevel,
-    email,
-    birthday,
-    score
-  ) => {
+  const onCreateAddModal = async (values) => {
     let newStudent = {
       studentCode: 18512,
-      firstName,
+      firstName: values.firstName,
       lastName: "Jacobs",
-      birthday,
-      class: classEducation,
-      course,
-      educationLevel,
+      birthday: convert(values.birthday._d),
+      class: values.class,
+      course: values.course,
+      educationLevel: values.educationLevel,
       typeOfEducation: "typeOfEducation",
       phone: "207.531.7620 x3018",
       address: "288 Gibson Roads",
       avatar: "https://cdn.fakercloud.com/avatars/ehsandiary_128.jpg",
-      score: parseInt(score),
-      email,
+      score: parseInt(values.score),
+      email: values.email,
       key: uuidv4(),
     };
 
@@ -163,27 +157,68 @@ function ContentPage() {
     setIsAddModalVisible(false);
   };
 
-  const handleAddModalCancel = () => {
+  const convert = (str) => {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  };
+
+  const onCancelAddModal = () => {
     setIsAddModalVisible(false);
   };
 
   const onEditStudent = (record) => {
     setIsEditModalVisible(true);
-    setEditingStudent({ ...record });
+    setEditingStudent(record);
+    setFields((prev) => [
+      ...prev,
+      {
+        name: ["firstName"],
+        value: record.firstName,
+      },
+      {
+        name: ["class"],
+        value: record.class,
+      },
+      {
+        name: ["course"],
+        value: record.course,
+      },
+      {
+        name: ["educationLevel"],
+        value: record.educationLevel,
+      },
+      {
+        name: ["email"],
+        value: record.email,
+      },
+      {
+        name: ["birthday"],
+        value: moment(record.birthday),
+      },
+      {
+        name: ["score"],
+        value: record.score,
+      },
+    ]);
   };
 
-  const handleEditModalOk = async () => {
+  const onCreateEditModal = async (values) => {
     const response = await axios.put(`${baseURL}/${editingStudent.id}`, {
       ...editingStudent,
+      ...values,
+      birthday: convert(values.birthday._d),
     });
 
     dispatch(editStudent(response.data));
-    handleEditModalCancel();
+    onCancelEditModal();
   };
 
-  const handleEditModalCancel = () => {
+  const onCancelEditModal = () => {
     setIsEditModalVisible(false);
     setEditingStudent(null);
+    setFields([]);
   };
 
   const onDeleteStudent = (record) => {
@@ -229,16 +264,14 @@ function ContentPage() {
       <List columns={columns} data={students} />
       <AddModal
         visible={isAddModalVisible}
-        handleOk={handleAddModalOk}
-        handleCancel={handleAddModalCancel}
+        onCreate={onCreateAddModal}
+        onCancel={onCancelAddModal}
       />
       <EditModal
         visible={isEditModalVisible}
-        okText="Lưu lại"
-        editingStudent={editingStudent}
-        handleOk={handleEditModalOk}
-        handleCancel={handleEditModalCancel}
-        setEditingStudent={setEditingStudent}
+        fields={fields}
+        onCreate={onCreateEditModal}
+        onCancel={onCancelEditModal}
       />
     </Content>
   );

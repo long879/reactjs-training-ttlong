@@ -1,19 +1,22 @@
-import { Input, Modal } from "antd";
+import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
 import React from "react";
 
-function EditModal({
-  visible,
-  handleOk,
-  handleCancel,
-  editingStudent,
-  setEditingStudent,
-}) {
-  // const [form] = Form.useForm();
-  // useEffect(() => {
-  //   form.setFieldsValue({
-  //     firstName: editingStudent.firstName,
-  //   });
-  // }, [form, editingStudent]);
+function EditModal({ visible, onCreate, onCancel, fields }) {
+  const [form] = Form.useForm();
+
+  const { Option } = Select;
+
+  const validateMessages = {
+    required: "${label} cần phải có!",
+    types: {
+      email: "${label} không hợp lệ!",
+      number: "${label} không hợp lệ!",
+    },
+    number: {
+      range: "${label} phải trong khoảng từ ${min} đến ${max}",
+    },
+  };
+
   return (
     <>
       <Modal
@@ -21,113 +24,104 @@ function EditModal({
         visible={visible}
         okText="Lưu lại"
         cancelText="Hủy"
-        onOk={() => handleOk()}
-        onCancel={handleCancel}
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              onCreate(values);
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
+        }}
+        onCancel={() => {
+          form.resetFields();
+          onCancel();
+        }}
       >
-        {/* <Form
+        <Form
           form={form}
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
+          validateMessages={validateMessages}
+          fields={fields}
         >
           <Form.Item
             label="Họ tên"
             name="firstName"
-            rules={[{ required: true, message: "Mời nhập họ tên!" }]}
-          > */}
-        <Input
-          value={editingStudent?.firstName}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, firstName: e.target.value };
-            });
-          }}
-        />
-        {/* </Form.Item> */}
-        {/* <Form.Item
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Lớp"
             name="class"
-            rules={[{ required: true, message: "Mời nhập lớp!" }]}
-          > */}
-        <Input
-          value={editingStudent?.class}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, class: e.target.value };
-            });
-          }}
-        />
-        {/* </Form.Item> */}
-        {/* <Form.Item
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Khóa học"
             name="course"
-            rules={[{ required: true, message: "Mời nhập khóa học!" }]}
-          > */}
-        <Input
-          value={editingStudent?.course}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, course: e.target.value };
-            });
-          }}
-        />
-        {/* </Form.Item> */}
-        {/* <Form.Item
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Trình độ"
             name="educationLevel"
-            rules={[{ required: true, message: "Mời nhập trình độ!" }]}
-          > */}
-        <Input
-          value={editingStudent?.educationLevel}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, educationLevel: e.target.value };
-            });
-          }}
-        />
-        {/* <Form.Item
+            rules={[{ required: true }]}
+          >
+            <Select>
+              <Option value="Cao đẳng">Cao đẳng</Option>
+              <Option value="Đại học">Đại học</Option>
+              <Option value="Thạc sĩ">Thạc sĩ</Option>
+              <Option value="Tiến sĩ">Tiến sĩ</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Mời nhập email!" }]}
-          > */}
-        <Input
-          value={editingStudent?.email}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, email: e.target.value };
-            });
-          }}
-        />
-        {/* </Form.Item> */}
-        {/* <Form.Item
+            rules={[{ required: true, type: "email" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
             label="Ngày sinh"
             name="birthday"
-            rules={[{ required: true, message: "Mời nhập ngày sinh!" }]}
-          > */}
-        <Input
-          value={editingStudent?.birthday}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, birthday: e.target.value };
-            });
-          }}
-        />
-        {/* s */}
-        {/* <Form.Item
+            rules={[{ required: true }]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item
             label="Điểm trung bình"
             name="score"
-            rules={[{ required: true, message: "Mời nhập điểm trung bình!" }]}
-          > */}
-        <Input
-          value={editingStudent?.score}
-          onChange={(e) => {
-            setEditingStudent((prev) => {
-              return { ...prev, score: e.target.value };
-            });
-          }}
-        />
-        {/* </Form.Item> */}
-        {/* </Form> */}
+            rules={[
+              {
+                required: true,
+                type: "number",
+                min: 0,
+                max: 100,
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+        </Form>
       </Modal>
     </>
   );

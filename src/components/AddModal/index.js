@@ -1,15 +1,21 @@
-import { Form, Input, Modal } from "antd";
-import React, { useState } from "react";
+import { Form, Input, Modal, Select, DatePicker, InputNumber } from "antd";
+import React from "react";
 
-function AddModal({ visible, handleOk, handleCancel }) {
+function AddModal({ visible, onCreate, onCancel }) {
+  const [form] = Form.useForm();
 
-  const [firstName, setFirstName] = useState("");
-  const [classEducation, setClassEducation] = useState("");
-  const [course, setCourse] = useState("");
-  const [educationLevel, setEducationLevel] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthday, setBirthday] = useState("");
-  const [score, setScore] = useState(0);
+  const { Option } = Select;
+
+  const validateMessages = {
+    required: "${label} cần phải có!",
+    types: {
+      email: "${label} không hợp lệ!",
+      number: "${label} không hợp lệ!",
+    },
+    number: {
+      range: "${label} phải trong khoảng từ ${min} đến ${max}",
+    },
+  };
 
   return (
     <>
@@ -18,91 +24,111 @@ function AddModal({ visible, handleOk, handleCancel }) {
         visible={visible}
         okText="Thêm mới"
         cancelText="Hủy"
-        onOk={() =>
-          handleOk(
-            firstName,
-            classEducation,
-            course,
-            educationLevel,
-            email,
-            birthday,
-            score
-          )
-        }
-        onCancel={handleCancel}
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              onCreate(values);
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
+        }}
+        onCancel={() => {
+          form.resetFields();
+          onCancel();
+        }}
       >
         <Form
+          form={form}
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           autoComplete="off"
+          initialValues={{
+            educationLevel: "Đại học",
+          }}
+          validateMessages={validateMessages}
         >
           <Form.Item
             label="Họ tên"
-            name="username"
-            rules={[{ required: true, message: "Mời nhập họ tên!" }]}
+            name="firstName"
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
           >
-            <Input
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+            <Input />
           </Form.Item>
 
           <Form.Item
             label="Lớp"
             name="class"
-            rules={[{ required: true, message: "Mời nhập lớp!" }]}
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
           >
-            <Input
-              value={classEducation}
-              onChange={(e) => setClassEducation(e.target.value)}
-            />
+            <Input />
           </Form.Item>
 
           <Form.Item
             label="Khóa học"
             name="course"
-            rules={[{ required: true, message: "Mời nhập khóa học!" }]}
+            rules={[
+              { required: true },
+              { max: 20, message: "Nhập tối đa 20 kí tự!" },
+              { min: 5, message: "Nhập tối thiểu 5 kí tự!" },
+            ]}
           >
-            <Input value={course} onChange={(e) => setCourse(e.target.value)} />
+            <Input />
           </Form.Item>
 
           <Form.Item
             label="Trình độ"
             name="educationLevel"
-            rules={[{ required: true, message: "Mời nhập trình độ!" }]}
+            rules={[{ required: true }]}
           >
-            <Input
-              value={educationLevel}
-              onChange={(e) => setEducationLevel(e.target.value)}
-            />
+            <Select>
+              <Option value="Cao đẳng">Cao đẳng</Option>
+              <Option value="Đại học">Đại học</Option>
+              <Option value="Thạc sĩ">Thạc sĩ</Option>
+              <Option value="Tiến sĩ">Tiến sĩ</Option>
+            </Select>
           </Form.Item>
 
           <Form.Item
             label="Email"
             name="email"
-            rules={[{ required: true, message: "Mời nhập email!" }]}
+            rules={[{ required: true, type: "email" }]}
           >
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input />
           </Form.Item>
 
           <Form.Item
             label="Ngày sinh"
             name="birthday"
-            rules={[{ required: true, message: "Mời nhập ngày sinh!" }]}
+            rules={[{ required: true }]}
           >
-            <Input
-              value={birthday}
-              onChange={(e) => setBirthday(e.target.value)}
-            />
+            <DatePicker />
           </Form.Item>
 
           <Form.Item
             label="Điểm trung bình"
             name="score"
-            rules={[{ required: true, message: "Mời nhập điểm!" }]}
+            rules={[
+              {
+                required: true,
+                type: "number",
+                min: 0,
+                max: 100,
+              },
+            ]}
           >
-            <Input value={score} onChange={(e) => setScore(e.target.value)} />
+            <InputNumber />
           </Form.Item>
         </Form>
       </Modal>
