@@ -1,0 +1,43 @@
+.banner__campus {
+  background: url(../../images/b2.jpg) no-repeat 0px 0px;
+  min-height: 640px;
+  position: relative;
+  text-align: center;
+  padding: 8em 0 0;
+
+  .banner__container {
+    width: 1170px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+
+    h3 {
+      line-height: 1.5em;
+      word-spacing: 7px;
+      @include styleText($white, $fs-3e, $fwb, $ttu);
+    }
+
+    .banner__grids {
+      padding: $pv-6e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .banner__grid {
+        width: 25%;
+
+        svg {
+          font-size: $fs-30p;
+          color: $white;
+        }
+
+        h4 {
+          padding-top: 1em;
+          letter-spacing: 1px;
+          @include styleText($white, 1.2em, 0, capitalize);
+        }
+      }
+    }
+  }
+}

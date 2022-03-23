@@ -1,0 +1,25 @@
+@mixin styleText($color, $fontSize, $fontWeight, $text-transform) {
+  color: $color;
+  font-size: $fontSize;
+  font-weight: $fontWeight;
+  text-transform: $text-transform;
+}
+
+@mixin styleButton(
+  $bg-color,
+  $border-color,
+  $pd-y,
+  $pd-x,
+  $border-radius,
+  $text-transform
+) {
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+  padding: $pd-y $pd-x;
+  border-radius: $border-radius;
+  text-transform: $text-transform;
+}
+
+// .heading {
+//   @include styleText($orange, $fs-32, bold, uppercase);
+// }

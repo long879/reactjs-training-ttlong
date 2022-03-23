@@ -1,0 +1,55 @@
+.header__campus {
+  padding: 0.8em 0;
+  background: $blue;
+
+  .header__container {
+    width: 1170px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header__contact {
+      float: left;
+      p {
+        color: $white;
+        font-size: $fs-1e;
+        text-align: center;
+        margin: 8px 0;
+        letter-spacing: 1px;
+      }
+    }
+
+    .header__search {
+      border: 1px solid $white;
+
+      input {
+        display: inline-block;
+        background: none;
+        border: none;
+        border-right: solid 1px $white;
+        width: 84%;
+        padding: 0.5em;
+        outline: none;
+        font-size: 0.9em;
+        color: $white;
+      }
+
+      .btn {
+        width: 16%;
+        color: $white;
+        font-size: 0.9em;
+        padding: 6px;
+        border: none;
+        outline: none;
+        text-align: center;
+        text-decoration: none;
+        background: none;
+        cursor: pointer;
+      }
+    }
+  }
+}

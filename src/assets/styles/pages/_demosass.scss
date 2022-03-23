@@ -1,0 +1,9 @@
+.campus {
+  padding: 10px 40px;
+  background: $blue;
+  .campus__contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,45 @@
+.navbar__campus {
+  min-height: 80px;
+  .navbar__container {
+    width: 1170px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+
+    .navbar__brand {
+      font-size: 18px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      h1 {
+        margin: 0;
+        @include styleText($orange, 2.5em, 600, uppercase);
+      }
+    }
+
+    .navbar__link {
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        li {
+          display: inline;
+          a {
+            padding: 30px 25px;
+            color: #09f;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+          }
+        }
+      }
+    }
+  }
+}
