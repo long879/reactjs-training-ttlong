@@ -45,10 +45,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           name="basic"
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
-          autoComplete="off"
-          initialValues={{
-            educationLevel: "Đại học",
-          }}
           validateMessages={validateMessages}
         >
           <Form.Item

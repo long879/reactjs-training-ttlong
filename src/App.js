@@ -8,8 +8,7 @@ import "./assets/styles/main.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Student from "./containers/Students";
 import Page404 from "./containers/Page404";
-
-import DemoPageCampus from "./containers/DemoPageCampus";
+import Statistics from "./containers/Statistics";
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
           <Sidebar />
           <Routes>
             <Route path="/" element={<Student />} />
-            <Route path="/chart" element={<DemoPageCampus />} />
+            <Route path="/chart" element={<Statistics />} />
             <Route path="*" element={<Page404 />} />
           </Routes>
         </Layout>

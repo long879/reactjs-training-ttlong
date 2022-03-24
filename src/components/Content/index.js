@@ -1,13 +1,17 @@
 import { Button, Col, Input, Layout, Modal, Row, Select, Space } from "antd";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import List from "../List";
 import AddModal from "../AddModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import EditModal from "../EditModal";
+import {
+  collegeStudentsGetData,
+  collegestudentsPostData,
+  collegestudentsPutData,
+  collegestudentsDeleteData,
+} from "../Datalayer/datalayerUtilities";
 
-import { useDispatch, useSelector } from "react-redux";
-
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 
@@ -18,9 +22,7 @@ import {
   deleteStudent,
   selectStudent,
 } from "../../redux/Student/student.actions";
-
-const baseURL =
-  "https://622f1f8f3ff58f023c16a485.mockapi.io/api/v1/collegestudent";
+import DetailModal from "../DetailModal";
 
 function ContentPage() {
   const { Content } = Layout;
@@ -31,7 +33,7 @@ function ContentPage() {
   const dispatch = useDispatch();
 
   const getListStudents = async () => {
-    const response = await axios.get(baseURL);
+    const response = await collegeStudentsGetData();
     dispatch(getStudents(response.data));
   };
 
@@ -40,11 +42,10 @@ function ContentPage() {
   }, []);
 
   const handleSelect = async (value, record) => {
-    const response = await axios.put(`${baseURL}/${record.id}`, {
+    const response = await collegestudentsPutData(record.id, {
       ...record,
       educationLevel: value,
     });
-
     dispatch(selectStudent(response.data));
   };
 
@@ -54,7 +55,9 @@ function ContentPage() {
       dataIndex: "firstName",
       key: "firstName",
 
-      render: (text) => <a href="/">{text}</a>,
+      render: (text, record) => (
+        <a onClick={() => onDetailStudent(record)}>{text}</a>
+      ),
     },
     {
       title: "Lớp",
@@ -74,7 +77,7 @@ function ContentPage() {
       responsive: ["md"],
       render: (text, record) => (
         <Select
-          defaultValue={text}
+          value={text}
           style={{ width: "100%" }}
           onSelect={(value) => handleSelect(value, record)}
         >
@@ -124,6 +127,7 @@ function ContentPage() {
 
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
   const [fields, setFields] = useState([]);
 
@@ -149,7 +153,7 @@ function ContentPage() {
       key: uuidv4(),
     };
 
-    const response = await axios.post(baseURL, {
+    const response = await collegestudentsPostData({
       ...newStudent,
     });
 
@@ -205,7 +209,7 @@ function ContentPage() {
   };
 
   const onCreateEditModal = async (values) => {
-    const response = await axios.put(`${baseURL}/${editingStudent.id}`, {
+    const response = await collegestudentsPutData(editingStudent.id, {
       ...editingStudent,
       ...values,
       birthday: convert(values.birthday._d),
@@ -221,6 +225,16 @@ function ContentPage() {
     setFields([]);
   };
 
+  const onDetailStudent = (record) => {
+    setIsDetailModalVisible(true);
+    setEditingStudent(record);
+  };
+
+  const onCreateDetailModal = () => {
+    setIsDetailModalVisible(false);
+    setEditingStudent(null);
+  };
+
   const onDeleteStudent = (record) => {
     Modal.confirm({
       title: "Bạn có chắc muốn xóa sinh viên này?",
@@ -228,7 +242,7 @@ function ContentPage() {
       okText: "Có",
       okType: "danger",
       onOk: async () => {
-        const response = await axios.delete(`${baseURL}/${record.id}`);
+        const response = await collegestudentsDeleteData(record.id);
         dispatch(deleteStudent(response.data));
       },
     });
@@ -272,6 +286,11 @@ function ContentPage() {
         fields={fields}
         onCreate={onCreateEditModal}
         onCancel={onCancelEditModal}
+      />
+      <DetailModal
+        visible={isDetailModalVisible}
+        editingStudent={editingStudent}
+        onCreate={onCreateDetailModal}
       />
     </Content>
   );
