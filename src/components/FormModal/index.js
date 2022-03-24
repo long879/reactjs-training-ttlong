@@ -1,7 +1,7 @@
-import { Form, Input, Modal, Select, DatePicker, InputNumber } from "antd";
+import { DatePicker, Form, Input, InputNumber, Modal, Select } from "antd";
 import React from "react";
 
-function AddModal({ visible, onCreate, onCancel }) {
+function FormModal({ visible, onCreate, onCancel, fields, title, okText }) {
   const [form] = Form.useForm();
 
   const { Option } = Select;
@@ -20,9 +20,9 @@ function AddModal({ visible, onCreate, onCancel }) {
   return (
     <>
       <Modal
-        title="Thêm sinh viên mới"
+        title={title}
         visible={visible}
-        okText="Thêm mới"
+        okText={okText}
         cancelText="Hủy"
         onOk={() => {
           form
@@ -46,6 +46,7 @@ function AddModal({ visible, onCreate, onCancel }) {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           validateMessages={validateMessages}
+          fields={typeof fields !== undefined ? fields : ""}
         >
           <Form.Item
             label="Họ tên"
@@ -58,7 +59,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             label="Lớp"
             name="class"
@@ -70,7 +70,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             label="Khóa học"
             name="course"
@@ -82,7 +81,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             label="Trình độ"
             name="educationLevel"
@@ -95,7 +93,6 @@ function AddModal({ visible, onCreate, onCancel }) {
               <Option value="Tiến sĩ">Tiến sĩ</Option>
             </Select>
           </Form.Item>
-
           <Form.Item
             label="Email"
             name="email"
@@ -103,7 +100,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             label="Ngày sinh"
             name="birthday"
@@ -111,7 +107,6 @@ function AddModal({ visible, onCreate, onCancel }) {
           >
             <DatePicker />
           </Form.Item>
-
           <Form.Item
             label="Điểm trung bình"
             name="score"
@@ -132,4 +127,4 @@ function AddModal({ visible, onCreate, onCancel }) {
   );
 }
 
-export default AddModal;
+export default FormModal;

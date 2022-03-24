@@ -2,9 +2,8 @@ import { Button, Col, Input, Layout, Modal, Row, Select, Space } from "antd";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import List from "../List";
-import AddModal from "../AddModal";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import EditModal from "../EditModal";
+
 import {
   collegeStudentsGetData,
   collegestudentsPostData,
@@ -23,6 +22,7 @@ import {
   selectStudent,
 } from "../../redux/Student/student.actions";
 import DetailModal from "../DetailModal";
+import FormModal from "../FormModal";
 
 function ContentPage() {
   const { Content } = Layout;
@@ -56,7 +56,9 @@ function ContentPage() {
       key: "firstName",
 
       render: (text, record) => (
-        <a onClick={() => onDetailStudent(record)}>{text}</a>
+        <a href="#" onClick={() => onDetailStudent(record)}>
+          {text}
+        </a>
       ),
     },
     {
@@ -276,13 +278,17 @@ function ContentPage() {
         </Row>
       </Input.Group>
       <List columns={columns} data={students} />
-      <AddModal
+      <FormModal
         visible={isAddModalVisible}
+        title="Thêm sinh viên mới"
+        okText="Thêm mới"
         onCreate={onCreateAddModal}
         onCancel={onCancelAddModal}
       />
-      <EditModal
+      <FormModal
         visible={isEditModalVisible}
+        title="Chỉnh sửa sinh viên"
+        okText="Lưu lại"
         fields={fields}
         onCreate={onCreateEditModal}
         onCancel={onCancelEditModal}
