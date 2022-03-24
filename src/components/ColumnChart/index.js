@@ -5,35 +5,27 @@ import { Column } from "@ant-design/plots";
 function ColumnChart() {
   const data = [
     {
-      type: "家具家电",
+      type: "Kém",
       sales: 38,
     },
     {
-      type: "粮油副食",
+      type: "Yếu",
       sales: 52,
     },
     {
-      type: "生鲜水果",
+      type: "Trung bình",
       sales: 61,
     },
     {
-      type: "美容洗护",
+      type: "Khá",
       sales: 145,
     },
     {
-      type: "母婴用品",
+      type: "Giỏi",
       sales: 48,
     },
     {
-      type: "进口食品",
-      sales: 38,
-    },
-    {
-      type: "食品饮料",
-      sales: 38,
-    },
-    {
-      type: "家庭清洁",
+      type: "Xuất sắc",
       sales: 38,
     },
   ];
@@ -42,10 +34,7 @@ function ColumnChart() {
     xField: "type",
     yField: "sales",
     label: {
-      // 可手动配置 label 数据标签位置
       position: "middle",
-      // 'top', 'bottom', 'middle',
-      // 配置样式
       style: {
         fill: "#FFFFFF",
         opacity: 0.6,
@@ -58,11 +47,8 @@ function ColumnChart() {
       },
     },
     meta: {
-      type: {
-        alias: "类别",
-      },
       sales: {
-        alias: "销售额",
+        alias: "Số học sinh",
       },
     },
   };

@@ -5,27 +5,27 @@ import { Pie } from "@ant-design/plots";
 function PieChart() {
   const data = [
     {
-      type: "分类一",
+      type: "Kém",
       value: 27,
     },
     {
-      type: "分类二",
+      type: "Yếu",
       value: 25,
     },
     {
-      type: "分类三",
+      type: "Trung bình",
       value: 18,
     },
     {
-      type: "分类四",
+      type: "Khá",
       value: 15,
     },
     {
-      type: "分类五",
+      type: "Giỏi",
       value: 10,
     },
     {
-      type: "其他",
+      type: "Xuất sắc",
       value: 5,
     },
   ];
