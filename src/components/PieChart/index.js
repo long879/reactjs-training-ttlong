@@ -1,39 +1,17 @@
 import React from "react";
 
 import { Pie } from "@ant-design/plots";
+import { Typography } from "antd";
 
-function PieChart() {
-  const data = [
-    {
-      type: "Kém",
-      value: 27,
-    },
-    {
-      type: "Yếu",
-      value: 25,
-    },
-    {
-      type: "Trung bình",
-      value: 18,
-    },
-    {
-      type: "Khá",
-      value: 15,
-    },
-    {
-      type: "Giỏi",
-      value: 10,
-    },
-    {
-      type: "Xuất sắc",
-      value: 5,
-    },
-  ];
+function PieChart({ sortStudents, title }) {
+  const { Title } = Typography;
+
+  const data = [...sortStudents];
 
   const config = {
     appendPadding: 10,
     data,
-    angleField: "value",
+    angleField: "number",
     colorField: "type",
     radius: 0.9,
     label: {
@@ -51,7 +29,12 @@ function PieChart() {
       },
     ],
   };
-  return <Pie {...config} />;
+  return (
+    <>
+      <Title level={2}>{title}</Title>
+      <Pie {...config} />
+    </>
+  );
 }
 
 export default PieChart;

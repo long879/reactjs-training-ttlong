@@ -1,38 +1,16 @@
 import React from "react";
 
 import { Column } from "@ant-design/plots";
+import { Typography } from "antd";
 
-function ColumnChart() {
-  const data = [
-    {
-      type: "Kém",
-      sales: 38,
-    },
-    {
-      type: "Yếu",
-      sales: 52,
-    },
-    {
-      type: "Trung bình",
-      sales: 61,
-    },
-    {
-      type: "Khá",
-      sales: 145,
-    },
-    {
-      type: "Giỏi",
-      sales: 48,
-    },
-    {
-      type: "Xuất sắc",
-      sales: 38,
-    },
-  ];
+function ColumnChart({ sortStudents, title }) {
+  const { Title } = Typography;
+
+  const data = [...sortStudents];
   const config = {
     data,
     xField: "type",
-    yField: "sales",
+    yField: "number",
     label: {
       position: "middle",
       style: {
@@ -47,12 +25,17 @@ function ColumnChart() {
       },
     },
     meta: {
-      sales: {
+      number: {
         alias: "Số học sinh",
       },
     },
   };
-  return <Column {...config} />;
+  return (
+    <>
+      <Title level={2}>{title}</Title>
+      <Column {...config} />
+    </>
+  );
 }
 
 export default ColumnChart;
